@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "target": "cms-gorgeta-cerol",
+    "public": ".output/public",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "frameworksBackend": {
+      "region": "us-east1"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "cms-gorgeta-do-cerol"
+  },
+  "targets": {
+    "gorgeta-do-cerol": {
+      "hosting": {
+        "cms-gorgeta-cerol": [
+          "cms-gorgeta-cerol"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

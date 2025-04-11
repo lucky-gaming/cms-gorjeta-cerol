@@ -1,1 +1,6 @@
 @import "./tailwind.css";
+@import "@flaticon/flaticon-uicons/css/all/all";
+
+body {
+  background-color: #140d0b;
+}
