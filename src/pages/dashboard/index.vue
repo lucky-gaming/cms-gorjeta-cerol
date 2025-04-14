@@ -37,21 +37,25 @@
             {{ item.email }}
           </div>
           <div class="col-span h-full flex items-center justify-center">
-            {{ item.tipValue }}
+            {{ formatCurrency(item.tipValue) }}
           </div>
           <div class="col-span h-full flex items-center justify-center">
             {{ formatISODate(item.created_at) }}
           </div>
           <div class="col-span h-full flex items-center justify-center">
-            <span v-if="item.done" class="flex items-center gap-2"
-              ><i
+            <button
+              v-if="item.done"
+              class="flex items-center gap-2"
+              @click="toggleItemStatus(item)"
+            >
+              <i
                 class="fi fi-ss-check-circle flex items-center justify-center text-white"
               ></i>
               Feito
-            </span>
+            </button>
             <button
               v-else
-              @click="markItemAsDone(item)"
+              @click="toggleItemStatus(item)"
               class="bg-primary text-secondary px-2 py-1 rounded"
             >
               Marcar como feito
@@ -70,6 +74,13 @@ const loading = ref(true);
 const data = ref([]);
 const error = ref(false);
 const { $firebase } = useNuxtApp();
+
+const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value);
+};
 
 const formatISODate = (date: string) => {
   //2025-04-11T11:42:12.277Z
@@ -99,11 +110,11 @@ const loadData = async () => {
   }
 };
 
-const markItemAsDone = async (item: any) => {
+const toggleItemStatus = async (item: any) => {
   try {
-    item.done = true;
+    item.done = !item.done;
     await updateDoc(doc($firebase.db, "tips", item.id), {
-      done: true,
+      done: item.done,
     });
     // loadData();
   } catch (err) {
