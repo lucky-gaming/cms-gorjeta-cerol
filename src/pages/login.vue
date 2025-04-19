@@ -89,6 +89,17 @@ const login = async () => {
   }
 };
 
+const handleInputInitialValues = () => {
+  form.value.username =
+    useRuntimeConfig().public.env.toString().trim() === "prod"
+      ? ""
+      : "X7#d9f$3LqW@z2M";
+  form.value.password =
+    useRuntimeConfig().public.env.toString().trim() === "prod"
+      ? ""
+      : "R@p9!mD#7xT4k^Y";
+};
+
 onMounted(() => {
   showSliver.value = true;
 
@@ -106,6 +117,9 @@ onMounted(() => {
 
   // foco no primeiro input
   usernameInput.value?.focus();
+
+  // Definindo os valores iniciais dos inputs
+  handleInputInitialValues();
 });
 </script>
 

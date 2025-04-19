@@ -4,7 +4,12 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   srcDir: "src/",
   css: ["~/assets/css/global.css"],
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/i18n", "@pinia/nuxt"],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "@nuxtjs/i18n",
+    "@pinia/nuxt",
+    "@vueuse/nuxt",
+  ],
   i18n: {
     locales: [
       {
@@ -24,5 +29,10 @@ export default defineNuxtConfig({
     detectBrowserLanguage: false,
     vueI18n: "./i18n.config.ts",
     strategy: "no_prefix",
+  },
+  runtimeConfig: {
+    public: {
+      env: process.env.ENV,
+    },
   },
 });
