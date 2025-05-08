@@ -55,11 +55,17 @@
           v-for="(item, index) in data"
           :key="index"
         >
-          <div class="col-span-5 h-full flex items-center justify-center">
+          <div class="col-span-5 h-full flex items-center justify-center gap-2">
             {{ item.email }}
+            <button type="button" @click="copyToClipboard(item.email)">
+              <i class="fi fi-sr-copy-alt"></i>
+            </button>
           </div>
-          <div class="col-span-2 h-full flex items-center justify-center">
+          <div class="col-span-2 h-full flex items-center justify-center gap-2">
             {{ formatCurrency(item.tipValue) }}
+            <button type="button" @click="copyToClipboard(item.tipValue)">
+              <i class="fi fi-sr-copy-alt"></i>
+            </button>
           </div>
           <div class="col-span-2 h-full flex items-center justify-center">
             {{ formatISODate(item.created_at) }}
@@ -110,6 +116,13 @@
       </div>
     </div>
   </div>
+  <div
+    class="fixed bottom-6 right-6 flex items-center gap-2 bg-primary text-black rounded-lg px-4 py-2 shadow-lg shadow-secondary z-[100] transition-all duration-200 ease-in-out"
+    v-if="copied"
+  >
+    <i class="fi fi-ss-check-circle flex items-center justify-center"></i>
+    <span class="font-semibold"> Copiado para a área de transferência! </span>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -149,12 +162,23 @@ const dropDownOptions = ref([
   { label: "Editar", value: "edit", icon: "fi fi-br-edit" },
 ]);
 const itemToEdit = ref(null);
+const copied = ref(false);
 
 const formatCurrency = (value: number) => {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   }).format(value);
+};
+
+const copyToClipboard = async (text: string) => {
+  copied.value = false;
+  await navigator.clipboard.writeText(text);
+
+  copied.value = true;
+  setTimeout(() => {
+    copied.value = false;
+  }, 1500);
 };
 
 const formatISODate = (date: Timestamp) => {

@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "cms-gorgeta-do-cerol"
+    "default": "gorgeta-do-cerol"
   },
   "targets": {
     "gorgeta-do-cerol": {
