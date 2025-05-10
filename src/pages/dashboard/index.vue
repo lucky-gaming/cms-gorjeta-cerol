@@ -56,7 +56,7 @@
           :key="index"
         >
           <div class="col-span-5 h-full flex items-center justify-center gap-2">
-            {{ item.email }}
+            {{ formatValue(item.email) }}
             <button type="button" @click="copyToClipboard(item.email)">
               <i class="fi fi-sr-copy-alt"></i>
             </button>
@@ -164,6 +164,28 @@ const dropDownOptions = ref([
 const itemToEdit = ref(null);
 const copied = ref(false);
 
+const checkValueType = (val: string) => {
+  if (val.includes("@")) {
+    return "email";
+  } else if (
+    val.toString().match(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/) ||
+    val.toString().match(/^\d{11}$/)
+  ) {
+    return "cpf";
+  } else {
+    return "email";
+  }
+};
+
+const formatValue = (val: string) => {
+  const type = checkValueType(val);
+  if (type === "email") {
+    return val;
+  } else if (type === "cpf") {
+    return val.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  }
+};
+
 const formatCurrency = (value: number) => {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -173,6 +195,9 @@ const formatCurrency = (value: number) => {
 
 const copyToClipboard = async (text: string) => {
   copied.value = false;
+  if (checkValueType(text) === "cpf") {
+    text = text.replace(/\D/g, "");
+  }
   await navigator.clipboard.writeText(text);
 
   copied.value = true;
